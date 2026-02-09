@@ -1,4 +1,9 @@
-mediapipe
-opencv-python
-numpy
+## blink detection
+
+opencv-python>=4.5.5
+numpy>=1.21.0
+mediapipe==0.10.10
+matplotlib>=3.5.0
+
+
 

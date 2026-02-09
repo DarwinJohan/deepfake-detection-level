@@ -1,70 +1,61 @@
 import cv2
+import mediapipe as mp
 import numpy as np
-from collections import deque
 import os
+from collections import deque
 
 # ------------------------
-# Setup debug folder
+# Config
 # ------------------------
 DEBUG_DIR = "debug_frames"
 os.makedirs(DEBUG_DIR, exist_ok=True)
 
+EAR_THRESHOLD = 0.25  # threshold for blink
+CONSEC_FRAMES = 2     # consecutive frames for blink
+
+# Mediapipe face mesh
+mp_face_mesh = mp.solutions.face_mesh
+face_mesh = mp_face_mesh.FaceMesh(
+    max_num_faces=1,
+    refine_landmarks=True,  # iris detection
+    min_detection_confidence=0.5,
+    min_tracking_confidence=0.5
+)
+
+# Eye landmark indices (from Mediapipe)
+LEFT_EYE_IDX = [33, 160, 158, 133, 153, 144]
+RIGHT_EYE_IDX = [263, 387, 385, 362, 380, 373]
+
 # ------------------------
-# EAR approximation from bbox
+# Helper functions
 # ------------------------
-def approximate_ear_from_bbox(eye_bbox):
-    x, y, w, h = eye_bbox
-    ratio = h / (w + 1e-6)
-    ear = max(0.1, min(0.35, ratio * 0.35))
+def euclidean(p1, p2):
+    return np.linalg.norm(np.array(p1) - np.array(p2))
+
+def eye_aspect_ratio(landmarks, eye_idx, image_shape):
+    h, w = image_shape
+    pts = [(int(landmarks[i].x * w), int(landmarks[i].y * h)) for i in eye_idx]
+    A = euclidean(pts[1], pts[5])
+    B = euclidean(pts[2], pts[4])
+    C = euclidean(pts[0], pts[3])
+    ear = (A + B) / (2.0 * C)
     return ear
 
 # ------------------------
-# Detect eyes with Haar Cascade
+# Blink detection main
 # ------------------------
-def detect_eyes(frame, face_cascade, eye_cascade):
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-
-    eyes = []
-    for (x, y, w, h) in faces:
-        roi_gray = gray[y:y+h, x:x+w]
-        detected_eyes = eye_cascade.detectMultiScale(roi_gray, 1.1, 5)
-        for (ex, ey, ew, eh) in detected_eyes:
-            # Filter: mata biasanya di atas setengah wajah
-            if ey + eh/2 > h/2:
-                continue
-            abs_x = x + ex
-            abs_y = y + ey
-            eyes.append((abs_x, abs_y, ew, eh))
-    return eyes
-
-# ------------------------
-# Blink analysis
-# ------------------------
-def analyze_blink(video_path, min_blinks=2, max_frames=300, frame_interval=3, verbose=True):
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
-
-    EAR_THRESHOLD = 0.20
-    CONSEC_FRAMES = 2
-
+def analyze_blink(video_path, max_frames=100, frame_interval=3, verbose=True):
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        print(f"❌ Cannot open video: {video_path}")
         return {"success": False, "reason": "cannot_open_video"}
-
-    total_frames_in_video = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     blink_count = 0
     counter = 0
-    processed_frames = 0
-    missing_faces = 0
-    ear_history = deque(maxlen=5)  # smoothing
-
-    if verbose:
-        print(f"\n👁️ Blink analysis: {video_path} | Total frames: {total_frames_in_video}")
-
     frame_count = 0
+    processed_frames = 0
+    ear_history = deque(maxlen=5)  # smoothing EAR
+    debug_frames_saved = 0
+
     while cap.isOpened() and processed_frames < max_frames:
         ret, frame = cap.read()
         if not ret:
@@ -74,111 +65,98 @@ def analyze_blink(video_path, min_blinks=2, max_frames=300, frame_interval=3, ve
         if frame_count % frame_interval != 0:
             continue
 
-        eyes = detect_eyes(frame, face_cascade, eye_cascade)
-        if len(eyes) < 2:
-            missing_faces += 1
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = face_mesh.process(rgb_frame)
+        if not results.multi_face_landmarks:
             processed_frames += 1
             continue
 
-        # Ambil dua mata pertama
-        leftEAR = approximate_ear_from_bbox(eyes[0])
-        rightEAR = approximate_ear_from_bbox(eyes[1])
-        ear = (leftEAR + rightEAR) / 2.0
+        landmarks = results.multi_face_landmarks[0].landmark
+        left_ear = eye_aspect_ratio(landmarks, LEFT_EYE_IDX, frame.shape[:2])
+        right_ear = eye_aspect_ratio(landmarks, RIGHT_EYE_IDX, frame.shape[:2])
+        ear = (left_ear + right_ear) / 2.0
         ear_history.append(ear)
-        smooth_ear = np.mean(ear_history)
 
         # Blink detection
-        blinked = False
-        if smooth_ear < EAR_THRESHOLD:
+        if ear < EAR_THRESHOLD:
             counter += 1
         else:
             if counter >= CONSEC_FRAMES:
                 blink_count += 1
-                blinked = True
                 if verbose:
                     print(f"   👁️ Blink #{blink_count} at frame {frame_count}")
             counter = 0
 
-        # ------------------------
-        # Draw eyes and blink info for debug
-        # ------------------------
-        for (ex, ey, ew, eh) in eyes[:2]:
-            color = (0, 0, 255) if blinked else (0, 255, 0)
-            cv2.rectangle(frame, (int(ex), int(ey)), (int(ex+ew), int(ey+eh)), color, 2)
-        cv2.putText(frame, f"Blink: {blink_count}", (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,255), 2)
+        # Draw eyes for debug
+        for idx in LEFT_EYE_IDX + RIGHT_EYE_IDX:
+            x = int(landmarks[idx].x * frame.shape[1])
+            y = int(landmarks[idx].y * frame.shape[0])
+            cv2.circle(frame, (x, y), 1, (0, 255, 0), -1)
 
+        # Save debug frame
         debug_filename = os.path.join(DEBUG_DIR, f"frame_{frame_count:04d}.jpg")
         cv2.imwrite(debug_filename, frame)
+        debug_frames_saved += 1
 
         processed_frames += 1
-
-        # Early stop
-        if blink_count >= min_blinks and processed_frames >= 50:
-            if verbose:
-                print(f"   ✅ Found {blink_count} blinks, stopping early")
-            break
 
     cap.release()
 
     if not ear_history:
         return {"success": False, "reason": "no_faces_detected"}
 
-    total_frames_with_face = len(ear_history)
-    missing_ratio = missing_faces / processed_frames if processed_frames > 0 else 0
-    fps = 30
+    # Metrics
+    avg_ear = float(np.mean(ear_history))
+    std_ear = float(np.std(ear_history))
+    fps = 30  # assume 30 fps
     duration_seconds = (processed_frames * frame_interval) / fps
     blink_rate_per_minute = (blink_count / duration_seconds) * 60 if duration_seconds > 0 else 0
 
-    avg_ear = float(np.mean(ear_history))
-    std_ear = float(np.std(ear_history))
-
-    # Suspicious detection
+# ------------------------
+# Suspicious detection (tune for less false positive)
+# ------------------------
     suspicious = False
     reasons = []
-    if blink_rate_per_minute < 8:
+
+    # turunkan sensitivitas: rentang blink rate lebih lebar
+    if blink_rate_per_minute < 5:  # sebelumnya 8
         suspicious = True
         reasons.append("low_blink_rate")
-    elif blink_rate_per_minute > 35:
+    elif blink_rate_per_minute > 50:  # sebelumnya 35
         suspicious = True
         reasons.append("high_blink_rate")
-    if std_ear < 0.015:
+
+    # Variansi EAR rendah sekarang diabaikan sampai < 0.008
+    if std_ear < 0.008:
         suspicious = True
         reasons.append("low_ear_variance")
-    if missing_ratio > 0.6:
-        suspicious = True
-        reasons.append("many_missing_faces")
-    if avg_ear < 0.15 or avg_ear > 0.35:
+
+    # Avg EAR ekstrem
+    if avg_ear < 0.12 or avg_ear > 0.38:  # sedikit diperluas
         suspicious = True
         reasons.append("abnormal_ear")
 
+
     result = {
         "success": True,
-        "total_frames": total_frames_with_face,
-        "processed_frames": processed_frames,
-        "missing_faces": missing_faces,
         "blink_count": blink_count,
         "blink_rate_per_minute": blink_rate_per_minute,
         "avg_ear": avg_ear,
         "std_ear": std_ear,
-        "missing_ratio": missing_ratio,
+        "processed_frames": processed_frames,
+        "debug_frames_saved": debug_frames_saved,
         "suspicious": suspicious,
         "reasons": reasons
     }
 
     if verbose:
-        print("\n📊 Blink Summary:")
-        print(f"- Processed frames: {processed_frames}")
-        print(f"- Total frames with face: {total_frames_with_face}")
-        print(f"- Missing faces: {missing_faces}")
-        print(f"- Total blinks: {blink_count}")
-        print(f"- Blink rate: {blink_rate_per_minute:.1f} per minute")
-        print(f"- Avg EAR: {avg_ear:.3f}")
-        print(f"- Std EAR: {std_ear:.3f}")
-        print("\n🧠 Interpretation:")
+        print("\n👁️ Blink Detection Summary:")
+        print(f"   Total blinks: {blink_count}")
+        print(f"   Blink rate (/min): {blink_rate_per_minute:.1f}")
+        print(f"   Avg EAR: {avg_ear:.3f}, Std EAR: {std_ear:.3f}")
         if suspicious:
-            print("⚠️ Suspicious:", ", ".join(reasons))
+            print(f"   ⚠️ Suspicious: {', '.join(reasons)}")
         else:
-            print("✅ Looks normal")
+            print("   ✅ Looks normal")
 
     return result

@@ -1,0 +1,116 @@
+{
+  "timestamp": "2026-02-09T17:24:08.737039",
+  "summary": {
+    "total_videos": 6,
+    "accuracy": 50.0
+  },
+  "results": [
+    {
+      "video_path": "fake\\1.mp4",
+      "blink": {
+        "success": true,
+        "blink_count": 3,
+        "blink_rate_per_minute": 30.337078651685395,
+        "avg_ear": 0.2757969794527701,
+        "std_ear": 0.00857877622972505,
+        "processed_frames": 89,
+        "debug_frames_saved": 89,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.9,
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\2.mp4",
+      "blink": {
+        "success": true,
+        "blink_count": 6,
+        "blink_rate_per_minute": 30.0,
+        "avg_ear": 0.13987750454666067,
+        "std_ear": 0.042041152305319844,
+        "processed_frames": 180,
+        "debug_frames_saved": 143,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.9,
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\3.mp4",
+      "blink": {
+        "success": true,
+        "blink_count": 0,
+        "blink_rate_per_minute": 0.0,
+        "avg_ear": 0.19284591240270582,
+        "std_ear": 0.007185124231020127,
+        "processed_frames": 96,
+        "debug_frames_saved": 93,
+        "suspicious": true,
+        "reasons": [
+          "low_blink_rate",
+          "low_ear_variance"
+        ]
+      },
+      "prediction": "FAKE",
+      "confidence": 0.8,
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "real\\1.mp4",
+      "blink": {
+        "success": true,
+        "blink_count": 3,
+        "blink_rate_per_minute": 21.259842519685037,
+        "avg_ear": 0.2701333142051297,
+        "std_ear": 0.015002888303841153,
+        "processed_frames": 127,
+        "debug_frames_saved": 126,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.9,
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\2.mp4",
+      "blink": {
+        "success": true,
+        "blink_count": 5,
+        "blink_rate_per_minute": 16.728624535315987,
+        "avg_ear": 0.2949645869516977,
+        "std_ear": 0.01194193607995547,
+        "processed_frames": 269,
+        "debug_frames_saved": 254,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.9,
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\3.mp4",
+      "blink": {
+        "success": true,
+        "blink_count": 13,
+        "blink_rate_per_minute": 94.35483870967741,
+        "avg_ear": 0.16510360850835443,
+        "std_ear": 0.10327495024167478,
+        "processed_frames": 124,
+        "debug_frames_saved": 123,
+        "suspicious": true,
+        "reasons": [
+          "high_blink_rate"
+        ]
+      },
+      "prediction": "FAKE",
+      "confidence": 0.8,
+      "ground_truth": "REAL"
+    }
+  ]
+}
