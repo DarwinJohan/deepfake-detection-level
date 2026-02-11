@@ -17,7 +17,7 @@ def analyze_emotion(video_path, max_frames=50, frame_interval=5, verbose=True):
     frame_count = 0
 
     if verbose:
-        print(f"\n🎥 Emotion analysis: {video_path}\n")
+        print(f"\nEmotion analysis: {video_path}\n")
 
     while cap.isOpened() and processed_frames < max_frames:
         ret, frame = cap.read()
@@ -100,7 +100,7 @@ def analyze_emotion(video_path, max_frames=50, frame_interval=5, verbose=True):
     # =====================
 
     if verbose:
-        print("📊 Emotion Summary:")
+        print("Emotion Summary:")
         print(f"- Total detected faces: {result['total_faces']}")
         print(f"- Missing faces: {result['missing_faces']}")
         print(f"- Emotion diversity: {result['emotion_diversity']}")
@@ -108,10 +108,10 @@ def analyze_emotion(video_path, max_frames=50, frame_interval=5, verbose=True):
         print(f"- Dominant emotion: {result['dominant_emotion']}")
         print(f"- Avg confidence: {result['avg_confidence']:.2f}%")
 
-        print("\n🧠 Interpretation:")
+        print("\nInterpretation:")
         if suspicious:
-            print("⚠️ Suspicious:", ", ".join(reasons))
+            print("Suspicious:", ", ".join(reasons))
         else:
-            print("✅ Looks normal")
+            print("Looks normal")
 
     return result

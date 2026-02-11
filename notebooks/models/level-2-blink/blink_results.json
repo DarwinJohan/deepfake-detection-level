@@ -1,0 +1,113 @@
+{
+  "timestamp": "2026-02-10T16:00:55.380025",
+  "summary": {
+    "total_videos": 13,
+    "accuracy": 0.0
+  },
+  "results": [
+    {
+      "video_path": "fake\\1.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\2.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\3.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\4.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\5.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\6.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\7.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "real\\1.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\2.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\3.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\4.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\5.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\6.mp4",
+      "blink": null,
+      "prediction": null,
+      "confidence": 0,
+      "error": "'SymbolDatabase' object has no attribute 'GetPrototype'",
+      "ground_truth": "REAL"
+    }
+  ]
+}

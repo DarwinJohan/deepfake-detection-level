@@ -84,7 +84,7 @@ def analyze_blink(video_path, max_frames=100, frame_interval=3, verbose=True):
             if counter >= CONSEC_FRAMES:
                 blink_count += 1
                 if verbose:
-                    print(f"   👁️ Blink #{blink_count} at frame {frame_count}")
+                    print(f"   Blink #{blink_count} at frame {frame_count}")
             counter = 0
 
         # Draw eyes for debug
@@ -112,30 +112,26 @@ def analyze_blink(video_path, max_frames=100, frame_interval=3, verbose=True):
     duration_seconds = (processed_frames * frame_interval) / fps
     blink_rate_per_minute = (blink_count / duration_seconds) * 60 if duration_seconds > 0 else 0
 
-# ------------------------
-# Suspicious detection (tune for less false positive)
-# ------------------------
+    # ------------------------
+    # Suspicious detection
+    # ------------------------
     suspicious = False
     reasons = []
 
-    # turunkan sensitivitas: rentang blink rate lebih lebar
-    if blink_rate_per_minute < 5:  # sebelumnya 8
+    if blink_rate_per_minute < 5:
         suspicious = True
         reasons.append("low_blink_rate")
-    elif blink_rate_per_minute > 50:  # sebelumnya 35
+    elif blink_rate_per_minute > 50:
         suspicious = True
         reasons.append("high_blink_rate")
 
-    # Variansi EAR rendah sekarang diabaikan sampai < 0.008
     if std_ear < 0.008:
         suspicious = True
         reasons.append("low_ear_variance")
 
-    # Avg EAR ekstrem
-    if avg_ear < 0.12 or avg_ear > 0.38:  # sedikit diperluas
+    if avg_ear < 0.12 or avg_ear > 0.38:
         suspicious = True
         reasons.append("abnormal_ear")
-
 
     result = {
         "success": True,
@@ -150,13 +146,13 @@ def analyze_blink(video_path, max_frames=100, frame_interval=3, verbose=True):
     }
 
     if verbose:
-        print("\n👁️ Blink Detection Summary:")
+        print("\nBlink Detection Summary:")
         print(f"   Total blinks: {blink_count}")
         print(f"   Blink rate (/min): {blink_rate_per_minute:.1f}")
         print(f"   Avg EAR: {avg_ear:.3f}, Std EAR: {std_ear:.3f}")
         if suspicious:
-            print(f"   ⚠️ Suspicious: {', '.join(reasons)}")
+            print(f"   Suspicious: {', '.join(reasons)}")
         else:
-            print("   ✅ Looks normal")
+            print("   Looks normal")
 
     return result

@@ -1,0 +1,331 @@
+{
+  "timestamp": "2026-02-10T16:14:31.968620",
+  "summary": {
+    "accuracy": 53.84615384615385,
+    "precision": 66.66666666666666,
+    "recall": 28.57142857142857,
+    "f1_score": 39.99999999999999,
+    "confusion_matrix": {
+      "TP": 2,
+      "TN": 5,
+      "FP": 1,
+      "FN": 5
+    }
+  },
+  "results": [
+    {
+      "video_path": "fake\\1.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 35,
+        "missing_faces": 0,
+        "emotion_diversity": 4,
+        "emotion_frequency": {
+          "sad": 13,
+          "neutral": 8,
+          "happy": 13,
+          "surprise": 1
+        },
+        "dominant_emotion": "sad",
+        "avg_confidence": 82.64716339111328,
+        "missing_ratio": 0.0,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.8,
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\2.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 50,
+        "missing_faces": 0,
+        "emotion_diversity": 6,
+        "emotion_frequency": {
+          "surprise": 6,
+          "neutral": 5,
+          "sad": 20,
+          "fear": 12,
+          "angry": 2,
+          "happy": 5
+        },
+        "dominant_emotion": "sad",
+        "avg_confidence": 79.6478271484375,
+        "missing_ratio": 0.0,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.8,
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\3.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 38,
+        "missing_faces": 0,
+        "emotion_diversity": 4,
+        "emotion_frequency": {
+          "happy": 21,
+          "fear": 3,
+          "sad": 6,
+          "neutral": 8
+        },
+        "dominant_emotion": "happy",
+        "avg_confidence": 91.24758911132812,
+        "missing_ratio": 0.0,
+        "suspicious": true,
+        "reasons": [
+          "high_confidence"
+        ]
+      },
+      "prediction": "FAKE",
+      "confidence": 0.85,
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\4.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 40,
+        "missing_faces": 0,
+        "emotion_diversity": 6,
+        "emotion_frequency": {
+          "happy": 6,
+          "neutral": 21,
+          "sad": 3,
+          "fear": 7,
+          "angry": 2,
+          "disgust": 1
+        },
+        "dominant_emotion": "neutral",
+        "avg_confidence": 74.59503173828125,
+        "missing_ratio": 0.0,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.8,
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\5.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 27,
+        "missing_faces": 0,
+        "emotion_diversity": 4,
+        "emotion_frequency": {
+          "neutral": 11,
+          "happy": 5,
+          "sad": 1,
+          "fear": 10
+        },
+        "dominant_emotion": "neutral",
+        "avg_confidence": 88.44064331054688,
+        "missing_ratio": 0.0,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.8,
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\6.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 44,
+        "missing_faces": 0,
+        "emotion_diversity": 3,
+        "emotion_frequency": {
+          "neutral": 32,
+          "sad": 5,
+          "fear": 7
+        },
+        "dominant_emotion": "neutral",
+        "avg_confidence": 82.69485473632812,
+        "missing_ratio": 0.0,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.8,
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "fake\\7.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 38,
+        "missing_faces": 0,
+        "emotion_diversity": 4,
+        "emotion_frequency": {
+          "happy": 18,
+          "neutral": 17,
+          "sad": 2,
+          "fear": 1
+        },
+        "dominant_emotion": "happy",
+        "avg_confidence": 94.06779479980469,
+        "missing_ratio": 0.0,
+        "suspicious": true,
+        "reasons": [
+          "high_confidence"
+        ]
+      },
+      "prediction": "FAKE",
+      "confidence": 0.85,
+      "ground_truth": "FAKE"
+    },
+    {
+      "video_path": "real\\1.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 50,
+        "missing_faces": 0,
+        "emotion_diversity": 3,
+        "emotion_frequency": {
+          "neutral": 47,
+          "sad": 1,
+          "happy": 2
+        },
+        "dominant_emotion": "neutral",
+        "avg_confidence": 90.02308654785156,
+        "missing_ratio": 0.0,
+        "suspicious": true,
+        "reasons": [
+          "high_confidence"
+        ]
+      },
+      "prediction": "FAKE",
+      "confidence": 0.85,
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\2.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 50,
+        "missing_faces": 0,
+        "emotion_diversity": 6,
+        "emotion_frequency": {
+          "neutral": 26,
+          "fear": 7,
+          "sad": 12,
+          "happy": 3,
+          "surprise": 1,
+          "angry": 1
+        },
+        "dominant_emotion": "neutral",
+        "avg_confidence": 86.50546264648438,
+        "missing_ratio": 0.0,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.8,
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\3.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 49,
+        "missing_faces": 0,
+        "emotion_diversity": 4,
+        "emotion_frequency": {
+          "neutral": 37,
+          "sad": 7,
+          "happy": 4,
+          "angry": 1
+        },
+        "dominant_emotion": "neutral",
+        "avg_confidence": 87.15110778808594,
+        "missing_ratio": 0.0,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.8,
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\4.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 39,
+        "missing_faces": 0,
+        "emotion_diversity": 6,
+        "emotion_frequency": {
+          "happy": 15,
+          "sad": 6,
+          "neutral": 10,
+          "fear": 6,
+          "angry": 1,
+          "disgust": 1
+        },
+        "dominant_emotion": "happy",
+        "avg_confidence": 78.06503295898438,
+        "missing_ratio": 0.0,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.8,
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\5.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 50,
+        "missing_faces": 0,
+        "emotion_diversity": 5,
+        "emotion_frequency": {
+          "neutral": 30,
+          "sad": 9,
+          "fear": 9,
+          "angry": 1,
+          "surprise": 1
+        },
+        "dominant_emotion": "neutral",
+        "avg_confidence": 78.44815826416016,
+        "missing_ratio": 0.0,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.8,
+      "ground_truth": "REAL"
+    },
+    {
+      "video_path": "real\\6.mp4",
+      "emotion": {
+        "success": true,
+        "total_faces": 50,
+        "missing_faces": 0,
+        "emotion_diversity": 6,
+        "emotion_frequency": {
+          "neutral": 8,
+          "fear": 18,
+          "sad": 7,
+          "happy": 1,
+          "angry": 12,
+          "disgust": 4
+        },
+        "dominant_emotion": "fear",
+        "avg_confidence": 67.67416381835938,
+        "missing_ratio": 0.0,
+        "suspicious": false,
+        "reasons": []
+      },
+      "prediction": "REAL",
+      "confidence": 0.8,
+      "ground_truth": "REAL"
+    }
+  ]
+}

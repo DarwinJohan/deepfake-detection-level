@@ -5,5 +5,18 @@ numpy>=1.21.0
 mediapipe==0.10.10
 matplotlib>=3.5.0
 
+## headpose detection
+
+pandas
+scipy
+tqdm
 
 
+# Utilities
+
+scikit-learn
+
+
+
+h5py
+tensorflow

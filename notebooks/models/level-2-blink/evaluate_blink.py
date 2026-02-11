@@ -46,7 +46,7 @@ def print_video_details(filename, result, label):
     Print blink analysis results for a single video
     """
     prediction = result.get("prediction", "ERROR")
-    status = "✅" if prediction == label else "❌"
+    status = "OK" if prediction == label else "WRONG"
 
     print(f"\n{status} {filename}")
     print(f"   Label: {label}  |  Predicted: {prediction}")
@@ -54,8 +54,8 @@ def print_video_details(filename, result, label):
     # Blink details
     if result.get("blink"):
         blink = result["blink"]
-        print(f"\n   👁️  BLINK ANALYSIS:")
-        print(f"      Status: {'⚠️ SUSPICIOUS' if blink['suspicious'] else '✅ NORMAL'}")
+        print(f"\n   BLINK ANALYSIS:")
+        print(f"      Status: {'SUSPICIOUS' if blink['suspicious'] else 'NORMAL'}")
         if blink['suspicious']:
             print(f"      Reasons: {', '.join(blink['reasons'])}")
         print(f"      Total Blinks: {blink['blink_count']}")
@@ -63,7 +63,7 @@ def print_video_details(filename, result, label):
         print(f"      Avg EAR: {blink['avg_ear']:.3f}")
         print(f"      EAR Variance: {blink['std_ear']:.3f}")
     else:
-        print(f"\n   👁️  BLINK ANALYSIS: ERROR")
+        print(f"\n   BLINK ANALYSIS: ERROR")
 
     print(f"   " + "-"*50)
 
@@ -73,7 +73,7 @@ def process_dataset(fake_dir="fake", real_dir="real", output_file="blink_results
     Process all videos in fake and real directories
     """
     print("\n" + "="*60)
-    print("🔬 BLINK DATASET PROCESSING")
+    print("BLINK DATASET PROCESSING")
     print("="*60)
 
     # Supported video formats
@@ -85,10 +85,10 @@ def process_dataset(fake_dir="fake", real_dir="real", output_file="blink_results
     real_videos = [os.path.join(real_dir, f) for f in sorted(os.listdir(real_dir))
                    if any(f.lower().endswith(ext) for ext in video_extensions)] if os.path.exists(real_dir) else []
 
-    print(f"📁 Found {len(fake_videos)} fake videos, {len(real_videos)} real videos")
+    print(f"Found {len(fake_videos)} fake videos, {len(real_videos)} real videos")
     total_videos = len(fake_videos) + len(real_videos)
     if total_videos == 0:
-        print("❌ No videos found. Exiting...")
+        print("No videos found. Exiting...")
         return
 
     all_results = []
@@ -99,7 +99,7 @@ def process_dataset(fake_dir="fake", real_dir="real", output_file="blink_results
     print("="*60)
     for video_path in fake_videos:
         filename = os.path.basename(video_path)
-        print(f"\n🎬 Processing: {filename}...")
+        print(f"\nProcessing: {filename}...")
         result = analyze_video(video_path, verbose=False)
         result["ground_truth"] = "FAKE"
         all_results.append(result)
@@ -111,7 +111,7 @@ def process_dataset(fake_dir="fake", real_dir="real", output_file="blink_results
     print("="*60)
     for video_path in real_videos:
         filename = os.path.basename(video_path)
-        print(f"\n🎬 Processing: {filename}...")
+        print(f"\nProcessing: {filename}...")
         result = analyze_video(video_path, verbose=False)
         result["ground_truth"] = "REAL"
         all_results.append(result)
@@ -119,14 +119,14 @@ def process_dataset(fake_dir="fake", real_dir="real", output_file="blink_results
 
     # Metrics
     print("\n" + "="*60)
-    print("📊 EVALUATION SUMMARY")
+    print("EVALUATION SUMMARY")
     print("="*60)
 
     correct = sum(1 for r in all_results if r.get("prediction") == r.get("ground_truth"))
     total = len(all_results)
     accuracy = (correct / total * 100) if total > 0 else 0
 
-    print(f"\n🎯 Overall Accuracy: {accuracy:.1f}% ({correct}/{total})")
+    print(f"\nOverall Accuracy: {accuracy:.1f}% ({correct}/{total})")
 
     # Save results
     output_data = {
@@ -141,7 +141,7 @@ def process_dataset(fake_dir="fake", real_dir="real", output_file="blink_results
     with open(output_file, 'w') as f:
         json.dump(output_data, f, indent=2)
 
-    print(f"\n💾 Results saved to: {output_file}")
+    print(f"\nResults saved to: {output_file}")
     print("="*60)
 
     return all_results
