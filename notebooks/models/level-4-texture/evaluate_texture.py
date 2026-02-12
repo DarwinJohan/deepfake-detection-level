@@ -74,7 +74,7 @@ def print_video_details(filename, result, label):
 # ==============================
 # DATASET PROCESSING
 # ==============================
-def process_dataset(fake_dir="fake", real_dir="real", output_file="texture_results.json"):
+def process_dataset(fake_dir="../fake", real_dir="../real", output_file="texture_results.json"):
 
     print("\n" + "=" * 60)
     print("🧪 TEXTURE DATASET PROCESSING")
